@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone') {
+            steps {
+				git branch: 'staging', credentialsId: '9932eef2-9bc6-41f2-8110-d6ea706fada1', url: 'https://github.com/thinhgakon/TAMDIEP_DMS_API.git'
+			}
+        }
+		stage('Build-Deploy') {
+            steps {
+                bat 'C:\\Batch-Scripts\\TAMDIEP_DMS_API.bat'
+	              }
+        }
+        stage('Slack') {
+         steps {
+               slackSend channel: '#build', message: 'Build TAMDIEP-DMS-API STAGING SUCCESS!', tokenCredentialId: 'slack-bot-token'
+            }
+        }
+	}
+}
